@@ -1,0 +1,6 @@
+[submodule "react-redux-starter"]
+	path = react-redux-starter
+	url = https://github.com/ejbrennanjr/react-redux-starter.git
+[submodule "lambda-rest-starter"]
+	path = lambda-rest-starter
+	url = https://github.com/ejbrennanjr/lambda-rest-starter.git
