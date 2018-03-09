@@ -1,0 +1,12 @@
+{
+  "name": "react-lambda-starter",
+  "version": "1.0.0",
+  "description": "A starter project for React & AWS Lambda Serverless development",
+  "main": "index.js",
+  "scripts": {
+    "create-stack": "aws cloudformation create-stack --stack-name edbrennanguru-neo--001 --template-body file://global.cfm.yml --parameters file://global-params.json --capabilities CAPABILITY_NAMED_IAM",
+    "delete-stack": "aws cloudformation delete-stack --stack-name edbrennanguru-neo--001"
+  },
+  "author": "EJB",
+  "license": "MIT"
+}

@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  DomainName:
+    Description: Domain name for your website (example.com)
+    Type: String
+    Default: edbrennan.guru
+
+Mappings:
+  Constants:
+    All:
+      CFhostedzoneID: Z2FDTNDATAQYW2
+  RegionMap:
+    us-east-1:
+      S3hostedzoneID: Z3AQBSTGFYJSTF
+      S3websiteendpoint: s3-website-us-east-1.amazonaws.com
+    us-east-2:
+      S3hostedzoneID: Z2O1EMRO9K5GLX
+      S3websiteendpoint: s3-website.us-east-2.amazonaws.com
+    us-west-1:
+      S3hostedzoneID: Z2F56UZL2M1ACD
+      S3websiteendpoint: s3-website-us-west-1.amazonaws.com
+    us-west-2:
+      S3hostedzoneID: Z3BJ6K6RIION7M
+      S3websiteendpoint: s3-website-us-west-2.amazonaws.com
+    ca-central-1:
+      S3hostedzoneID: Z1QDHH18159H29
+      S3websiteendpoint: s3-website.ca-central-1.amazonaws.com
+    eu-central-1:
+      S3hostedzoneID: Z21DNDUVLTQW6Q
+      S3websiteendpoint: s3-website.eu-central-1.amazonaws.com
+    eu-west-1:
+      S3hostedzoneID: Z1BKCTXD74EZPE
+      S3websiteendpoint: s3-website-eu-west-1.amazonaws.com
+    ap-northeast-1:
+      S3hostedzoneID: Z2M4EHUR26P7ZW
+      S3websiteendpoint: s3-website-ap-northeast-1.amazonaws.com
+    ap-south-1:
+      S3hostedzoneID: Z11RGJOFQNVJUP
+      S3websiteendpoint: s3-website.ap-south-1.amazonaws.com
+    ap-southeast-1:
+      S3hostedzoneID: Z3O0J2DXBE1FTB
+      S3websiteendpoint: s3-website-ap-southeast-1.amazonaws.com
+    ap-southeast-2:
+      S3hostedzoneID: Z1WCIGYICN2BYD
+      S3websiteendpoint: s3-website-ap-southeast-2.amazonaws.com
+
+
+
+
+Resources:
+ # Important
+  # When you use the AWS::CertificateManager::Certificate resource in an AWS CloudFormation stack, 
+  # the stack will remain in the CREATE_IN_PROGRESS state and any further stack operations will be 
+  # delayed until you act upon the instructions in the certificate validation email.
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-certificatemanager-certificate.html
+  SSLCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub '${DomainName}'  
+      SubjectAlternativeNames:
+      - !Sub 'www.${DomainName}'
+      - !Sub 'api.${DomainName}'
+
+
+
+  APIGatewayDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      CertificateArn: !Ref SSLCertificate
+      DomainName: !Sub 'api.${DomainName}'  
+
+
+  APIGatewayDomainDNS:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub 'api.${DomainName}'
+      Comment: API Subdomain Alias Record pointing to API Gateway Cloudfront Distribution.  
+      HostedZoneName: !Sub '${DomainName}.'
+      Type: A
+      AliasTarget:
+        HostedZoneId: !FindInMap [ Constants, All, CFhostedzoneID]
+        DNSName:  !GetAtt APIGatewayDomainName.DistributionDomainName
+
+
+Outputs:
+  StackName:
+    Value: !Sub '${AWS::StackName}'
+    Export:
+        Name: 'Neo-StackName'     
+  DomainName:
+    Value: !Ref DomainName
+    Export:
+        Name: 'Neo-DomainName'
+  SSLCerticateArn:
+    Value: !Ref SSLCertificate
+    Export:
+        Name: 'Neo-SSLCertificateArn'    
+  S3HostedZoneId:
+    Value:  !FindInMap [ RegionMap, !Ref 'AWS::Region', S3hostedzoneID]
+    Export:
+        Name: 'Neo-S3HostedZoneId'     
+  S3WebsiteEndPoint:
+    Value:  !FindInMap [ RegionMap, !Ref 'AWS::Region', S3websiteendpoint]
+    Export:
+        Name: !Sub 'Neo-S3WebsiteEndPoint'         
+  CloudFrontHostedZoneId:
+    Value:  !FindInMap [ Constants, All, CFhostedzoneID]    
+    Export:
+        Name: !Sub 'Neo-CloudFrontHostedZoneId'         

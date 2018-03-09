@@ -1,0 +1,80 @@
+---------------------------------------------------------------------
+CloudFormation Stacks:
+---------------------------------------------------------------------
+- <app>-<subapp>-<service>-<instance>  ------------------------------
+
+edbrennanguru-api-friends-001
+edbrennanguru-cid-friends-001 
+edbrennanguru-cid-website-001
+edbrennanguru-neo--001
+edbrennanguru-www-website-001
+
+
+
+---------------------------------------------------------------------
+S3:
+---------------------------------------------------------------------
+- <stackname>-<bucketname>-s3-<region> ------------------------------
+
+edbrennanguru-api-friends-001-buildartifacts-s3-useast1
+edbrennanguru-www-website-001-buildartifacts-s3-useast1
+
+
+
+
+---------------------------------------------------------------------
+S3 Static Website: 
+---------------------------------------------------------------------
+- <domainname> ------------------------------------------------------
+
+edbrennan.guru
+www.edbrennan.guru
+
+
+
+---------------------------------------------------------------------
+Lambda:
+---------------------------------------------------------------------
+- <stackname>-<functionname>-lambda-<region> ------------------------
+edbrennanguru-api-friends-001--lambda-useast1
+
+
+
+---------------------------------------------------------------------
+APIGateway:
+---------------------------------------------------------------------
+- <stackname>-<apiname>-apig-<region> -------------------------------
+edbrennanguru-api-friends-001--apig-useast1
+
+
+
+---------------------------------------------------------------------
+CodePipeline: 
+---------------------------------------------------------------------
+- <stackname>-cpipe-<region> ----------------------------------------
+
+edbrennanguru-api-friends-001-cpipe-useast1
+edbrennanguru-www-website-001-cpipe-useast1
+
+
+
+---------------------------------------------------------------------
+CodeBuild: 
+---------------------------------------------------------------------
+- <stackname>-<action>-cbuild-<region> ------------------------------
+edbrennanguru-api-friends-001-compile-cbuild-useast1
+edbrennanguru-api-friends-001-deploy-cbuild-useast1
+edbrennanguru-api-friends-001-compile-cbuild-useast1
+
+
+
+---------------------------------------------------------------------
+IAM : 
+---------------------------------------------------------------------
+- <stackname>-<rolename>-[role/policy]-iam --------------------------
+edbrennanguru-api-friends-001-cbuild-role-iam
+edbrennanguru-api-friends-001-cform-role-iam
+edbrennanguru-api-friends-001-cpipe-role-iam
+edbrennanguru-api-friends-001-cbuild-policy-iam
+edbrennanguru-api-friends-001-cform-policy-iam
+edbrennanguru-api-friends-001-cpipe-policy-iam

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+logs/
+.secrets.env
+/.secrets
+*.log
+/.aws/pipeline-params.json
+/cicd-pipeline/pipeline-params.json
+global-params.json
+
