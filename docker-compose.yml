@@ -57,3 +57,4 @@ services:
 
 
 
+# docker run --rm --env-file .secrets.env -p 3000:3000 -v $(PWD):/home/neo/app node9-awscli npm run create-stack
